@@ -2,17 +2,20 @@ package org.firstinspires.ftc.teamcode.susannah;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.System;
 
 @TeleOp
 public class bob extends LinearOpMode {
 
     public Drive drive;
+    public System system;
 
     @Override
     public void runOpMode() {
         drive = new Drive(hardwareMap);
+        system = new System(hardwareMap);
 
         telemetry.addData("Initialized", "Ready to start");
         waitForStart();
@@ -28,13 +31,28 @@ public class bob extends LinearOpMode {
 //                        frontLeft.setPower(((1 * gamepad1.left_stick_y - gamepad1.left_stick_x) - gamepad1.right_stick_x) * speed);
 //                        frontRight.setPower(((-1 * gamepad1.left_stick_y - gamepad1.left_stick_x) - gamepad1.right_stick_x) * speed);
 
-                        double speed = -gamepad1.left_stick_y;
-                        double turn = gamepad1.right_stick_x;
+                        double speed = gamepad1.left_stick_y;
+                        double turn = -gamepad1.right_stick_x;
                         double strafe = gamepad1.left_stick_x;
                         drive.frontLeft.setPower(speed + turn + strafe);
                         drive.frontRight.setPower(speed - turn + strafe);
                         drive.backLeft.setPower(speed + turn - strafe);
                         drive.backRight.setPower(speed - turn - strafe);
+
+//                        if (gamepad1.right_bumper) {
+//                            system.carousel.setPower(0.7);
+//                        } else if (gamepad1.left_bumper) {
+//                            system.carousel.setPower(-0.7);
+//                        }
+
+                        if (gamepad1.dpad_up) {
+                            system.Elevate(1);
+                        } else if (gamepad1.dpad_down) {
+                            system.Elevate(0);
+                        } else {
+                            system.cascade.setPower(0.1);
+                            system.cascadeDown.setPower(-.5);
+                        }
 
 //            double x = gamepad1.left_stick_x;
 //            double y = gamepad1.left_stick_y*-1;
